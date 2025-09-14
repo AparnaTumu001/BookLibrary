@@ -69,7 +69,7 @@ class _BooksListState extends State<BooksList> {
                       controller: _scrollController,
                       itemCount: 10,
                       itemBuilder: (context, index) =>
-                          const ShimmerBookListItem(),
+                      const ShimmerBookListItem(),
                     );
                   } else if (state is BooksListLoaded) {
                     return RefreshIndicator(
@@ -102,7 +102,24 @@ class _BooksListState extends State<BooksList> {
                   } else if (state is BooksListError) {
                     return const Center(child: Text(AppStrings.no_data));
                   } else {
-                    return Container();
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.search, size: 80,
+                              color: Colors.deepPurple.withOpacity(0.6)),
+                          const SizedBox(height: 16),
+                          const Text(
+                            "Search Books",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black54,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
                   }
                 },
               ),
