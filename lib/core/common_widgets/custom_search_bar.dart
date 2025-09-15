@@ -51,7 +51,11 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               splashRadius: 24,
               splashColor: Colors.deepPurple.withOpacity(0.3),
               highlightColor: Colors.deepPurple.withOpacity(0.1),
-              onPressed: () => _onSearchSubmitted(_searchController.text),
+              onPressed: () {
+                if (_searchController.text.isNotEmpty) {
+                  _onSearchSubmitted(_searchController.text);
+                }
+              },
             ),
           ],
         ),

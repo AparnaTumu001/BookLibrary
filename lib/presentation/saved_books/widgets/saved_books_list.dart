@@ -53,23 +53,45 @@ class _SavedBooksListState extends State<SavedBooksList> {
                   } else if (state is SavedBookLoaded) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: AnimationLimiter(
-                        child: ListView.builder(
-                          itemCount: state.books.length,
-                          itemBuilder: (context, index) {
-                            final book = state.books[index];
-                            return CommonListWidget(
-                              docsModel: DocsModel(
-                                authorName: [book.authorName],
-                                title: book.title,
+                      child: state.books.isNotEmpty
+                          ? AnimationLimiter(
+                              child: ListView.builder(
+                                itemCount: state.books.length,
+                                itemBuilder: (context, index) {
+                                  final book = state.books[index];
+                                  return CommonListWidget(
+                                    docsModel: DocsModel(
+                                      authorName: [book.authorName],
+                                      title: book.title,
+                                    ),
+                                    index: index,
+                                    imageUrl: book.imageLink,
+                                    isFromSaved: true,
+                                  );
+                                },
                               ),
-                              index: index,
-                              imageUrl: book.imageLink,
-                              isFromSaved: true,
-                            );
-                          },
-                        ),
-                      ),
+                            )
+                          : Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.search,
+                                    size: 80,
+                                    color: Colors.deepPurple.withOpacity(0.6),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  const Text(
+                                    "No books found",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                     );
                   } else if (state is SavedBookError) {
                     return const Center(child: Text(AppStrings.no_data));

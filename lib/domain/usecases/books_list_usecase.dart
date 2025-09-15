@@ -16,7 +16,11 @@ class GetBooksListUseCase
   @override
   Future<Either<Failure, BooksListModel>> call(BooksListParams params) async {
     try {
-      final result = await booksListRepository.getBooks(params.query,params.limit,params.offset);
+      final result = await booksListRepository.getBooks(
+        params.query,
+        params.limit,
+        params.offset,
+      );
       return Right(result);
     } catch (e) {
       print(e);
@@ -47,23 +51,26 @@ class BooksListParams {
   final String query;
   final String limit;
   final String offset;
+  final bool? isRefresh;
 
   const BooksListParams({
     required this.query,
     required this.limit,
     required this.offset,
+    this.isRefresh,
   });
 
   BooksListParams copyWith({
     String? query,
     String? limit,
     String? offset,
+    bool? isRefresh,
   }) {
     return BooksListParams(
       query: query ?? this.query,
       limit: limit ?? this.limit,
       offset: offset ?? this.offset,
+      isRefresh: isRefresh ?? this.isRefresh,
     );
   }
 }
-

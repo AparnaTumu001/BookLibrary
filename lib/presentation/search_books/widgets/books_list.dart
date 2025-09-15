@@ -15,8 +15,8 @@ class BooksList extends StatefulWidget {
 }
 
 class _BooksListState extends State<BooksList> {
-  final TextEditingController _searchController = TextEditingController();
   final _scrollController = ScrollController();
+  String query = '';
 
   @override
   void initState() {
@@ -44,7 +44,8 @@ class _BooksListState extends State<BooksList> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: CustomSearchBar(
-              onSearch: (String query) {
+              onSearch: (String param) {
+                query = param;
                 _onSearchSubmitted(query);
               },
             ),
@@ -69,12 +70,13 @@ class _BooksListState extends State<BooksList> {
                       controller: _scrollController,
                       itemCount: 10,
                       itemBuilder: (context, index) =>
-                      const ShimmerBookListItem(),
+                          const ShimmerBookListItem(),
                     );
                   } else if (state is BooksListLoaded) {
                     return RefreshIndicator(
-                      onRefresh: () async =>
-                          _onSearchSubmitted(_searchController.text),
+                      onRefresh: () async {
+                        _onSearchSubmitted(query);
+                      },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: AnimationLimiter(
@@ -87,7 +89,6 @@ class _BooksListState extends State<BooksList> {
                                 coverI: book.coverI,
                                 editionKey: book.coverEditionKey,
                               );
-                              print(imageUrl);
                               return CommonListWidget(
                                 docsModel: state.books[index],
                                 index: index,
@@ -106,8 +107,11 @@ class _BooksListState extends State<BooksList> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.search, size: 80,
-                              color: Colors.deepPurple.withOpacity(0.6)),
+                          Icon(
+                            Icons.search,
+                            size: 80,
+                            color: Colors.deepPurple.withOpacity(0.6),
+                          ),
                           const SizedBox(height: 16),
                           const Text(
                             "Search Books",
